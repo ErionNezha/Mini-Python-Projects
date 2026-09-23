@@ -1,0 +1,328 @@
+<!-- Created by Erion Nezha — © 2026 All rights reserved -->
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Projekte Python — Demo Interaktive</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0b0e13;color:#e8eef5;min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,#101823,#1a2433);border-bottom:2px solid #d4a01755;padding:22px 16px;text-align:center}
+header h1{font-size:1.4rem;color:#fff;letter-spacing:1px}
+header p{font-size:.85rem;color:#9fb3c8;margin-top:6px;max-width:720px;margin-left:auto;margin-right:auto}
+#menu{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:14px;background:#0d1420;border-bottom:1px solid #ffffff10}
+#menu button{background:#1b263b;color:#cfd8e3;border:1px solid #ffffff22;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:.78rem;transition:.15s}
+#menu button:hover{border-color:#d4a017}
+#menu button.active{background:#d4a017;color:#111;font-weight:700;border-color:#d4a017}
+main{flex:1;padding:20px;max-width:900px;width:100%;margin:0 auto}
+.mini{display:none;background:#101823;border:1px solid #ffffff14;border-radius:12px;padding:22px;margin-bottom:16px}
+.mini.active{display:block}
+.mini h2{font-size:1.15rem;color:#ffd75c;margin-bottom:8px}
+.mini .desc{font-size:.85rem;color:#9fb3c8;margin-bottom:14px;line-height:1.6}
+.widget{background:#0b0e13;border:1px solid #ffffff10;border-radius:8px;padding:16px}
+.widget input,.widget textarea,.widget select{background:#1b263b;border:1px solid #ffffff22;color:#e8eef5;border-radius:6px;padding:9px 12px;font-size:.88rem;width:100%;margin:6px 0;font-family:inherit}
+.widget textarea{min-height:90px;resize:vertical;font-family:Consolas,monospace;font-size:.8rem}
+.widget button{background:#d4a017;color:#111;border:none;border-radius:6px;padding:9px 18px;font-size:.88rem;font-weight:600;cursor:pointer;margin:6px 6px 6px 0}
+.widget button.ghost{background:#1b263b;color:#cfd8e3;border:1px solid #ffffff22}
+.widget button:hover{filter:brightness(1.1)}
+.out{background:#05070a;border:1px solid #ffffff10;border-radius:6px;padding:12px;margin-top:10px;font-family:Consolas,monospace;font-size:.82rem;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow:auto;color:#aef1af}
+.out.err{color:#ff8a8a}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1;min-width:140px}
+.src{font-size:.75rem;color:#5c6b7f;margin-top:12px}
+.src code{color:#9fb3c8}
+ul.todo{list-style:none;margin-top:8px}
+ul.todo li{background:#1b263b;border-radius:6px;padding:8px 12px;margin:6px 0;display:flex;gap:10px;align-items:center;font-size:.88rem}
+ul.todo li.done span{text-decoration:line-through;color:#5c6b7f}
+ul.todo li button{margin:0;padding:4px 10px;font-size:.75rem}
+.term{background:#05070a;border-radius:6px;padding:14px;font-family:Consolas,monospace;color:#aef1af;font-size:.85rem;margin-top:10px;min-height:60px}
+.bar{height:22px;background:#1b263b;border-radius:11px;overflow:hidden;margin-top:10px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d4a017,#ffd75c);transition:width .1s}
+.note{font-size:.78rem;color:#8a7a4a;margin-top:10px;line-height:1.5}
+canvas.preview{max-width:100%;border-radius:6px;margin-top:10px;border:1px solid #ffffff22}
+footer{text-align:center;padding:16px;color:#5c6b7f;font-size:.82rem;border-top:1px solid #ffffff10}
+footer strong{color:#9fb3c8}
+@media(max-width:600px){.mini{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+<h1>🧰 MINI PROJEKTE PYTHON</h1>
+<p>Koleksion me 23 mini-projekte Python — secili me demo interaktive që ekzekutohet në browser. Kodi origjinal i paprekur gjendet te tab-i <strong>Kodi Burim</strong>.</p>
+</header>
+<nav id="menu"></nav>
+<main id="app">
+<!-- 1. CLI Todo App -->
+<section class="mini" id="m-todo"><h2>📝 CLI Todo App</h2>
+<p class="desc">Versioni web i "CLI Todo App.py" — shto, shëno si të kryer dhe fshi detyra.</p>
+<div class="widget"><div class="row"><input id="todoIn" placeholder="Detyrë e re..."><button onclick="todoAdd()">Shto</button></div><ul class="todo" id="todoList"></ul></div>
+<p class="src">📄 Kodi: <code>CLI Todo App.py</code></p></section>
+<!-- 2. Calculate Your Age -->
+<section class="mini" id="m-age"><h2>🎂 Calculate Your Age</h2>
+<p class="desc">Versioni web i "Calculate Your Age.py" — llogarit moshën e saktë nga data e lindjes.</p>
+<div class="widget"><label>Data e lindjes:</label><input type="date" id="ageIn" value="1990-06-15"><button onclick="ageCalc()">Llogarit</button><div class="out" id="ageOut">Zgjidh datën dhe kliko Llogarit.</div></div>
+<p class="src">📄 Kodi: <code>Calculate Your Age.py</code></p></section>
+<!-- 3. Screenshots at intervals -->
+<section class="mini" id="m-shot"><h2>📸 Capture Screenshots At Regular Intervals</h2>
+<p class="desc">Simulim i "Capture Screenshots At Regular Intervals of Time.py" — planifikon kapje periodike dhe regjistron log-un (kapja reale kërkon desktop).</p>
+<div class="widget"><div class="row"><input type="number" id="shotSec" value="5" min="1" placeholder="Sekonda"><button onclick="shotStart()">Nis planifikimin</button><button class="ghost" onclick="shotStop()">Ndalo</button></div><div class="out" id="shotOut">Asnjë kapje e planifikuar.</div></div>
+<p class="src">📄 Kodi: <code>Capture Screenshots At Regular Intervals of Time.py</code></p></section>
+<!-- 4. JSON to CSV -->
+<section class="mini" id="m-json"><h2>🔄 Convert JSON to CSV</h2>
+<p class="desc">Versioni web i "Convert JSON to CSV.py" — ngjit JSON dhe konvertoje në CSV.</p>
+<div class="widget"><textarea id="jsonIn">[{"Name":"Ana","age":28,"birthyear":1998},{"Name":"Beni","age":34,"birthyear":1992}]</textarea><button onclick="json2csv()">Konverto</button><button class="ghost" onclick="csvDl()">Shkarko CSV</button><div class="out" id="jsonOut"></div></div>
+<p class="src">📄 Kodi: <code>Convert JSON to CSV.py</code></p></section>
+<!-- 5. Stopwatch -->
+<section class="mini" id="m-sw"><h2>⏱️ Simple Stopwatch</h2>
+<p class="desc">Versioni web i "Create a simple stopwatch.py" — kronometër me xhiro (laps).</p>
+<div class="widget"><div class="out" id="swOut" style="font-size:1.6rem;text-align:center">00:00.00</div><button onclick="swStart()">Nis</button><button class="ghost" onclick="swLap()">Xhiro</button><button class="ghost" onclick="swReset()">Rifillo</button><div class="out" id="swLaps"></div></div>
+<p class="src">📄 Kodi: <code>Create a simple stopwatch.py</code></p></section>
+<!-- 6. Currency Converter -->
+<section class="mini" id="m-cur"><h2>💱 Currency Converter</h2>
+<p class="desc">Versioni web i "Currency Converter.py" — konvertim monedhash me kurse statike demo.</p>
+<div class="widget"><div class="row"><input type="number" id="curAmt" value="100"><select id="curFrom"><option>USD</option><option>EUR</option><option>GBP</option><option>ALL</option><option>JPY</option></select><select id="curTo"><option>ALL</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select></div><button onclick="curConv()">Konverto</button><div class="out" id="curOut"></div><p class="note">Kurset janë statike për demo (1 USD ≈ 92 ALL, 1 EUR ≈ 100 ALL).</p></div>
+<p class="src">📄 Kodi: <code>Currency Converter.py</code></p></section>
+<!-- 7. Decimal to Binary -->
+<section class="mini" id="m-bin"><h2>🔢 Decimal to Binary Converter</h2>
+<p class="desc">Versioni web i "Decimal to Binary converter.py" — konvertim në të dy drejtimet.</p>
+<div class="widget"><div class="row"><input id="binDec" placeholder="Dhjetor (p.sh. 42)"><input id="binBin" placeholder="Binar (p.sh. 101010)"></div><button onclick="binConvert()">Konverto</button><div class="out" id="binOut"></div></div>
+<p class="src">📄 Kodi: <code>Decimal to Binary converter.py</code></p></section>
+<!-- 8. Encrypt/Decrypt AES -->
+<section class="mini" id="m-aes"><h2>🔐 Encrypt and Decrypt Texts (AES)</h2>
+<p class="desc">Versioni web i "Encrypt and Decrypt Texts.py" — enkriptim real AES-GCM me WebCrypto (IV rastësor, si skripti origjinal).</p>
+<div class="widget"><textarea id="aesIn" placeholder="Teksti për enkriptim...">Pershendetje nga Erion!</textarea><button onclick="aesEnc()">Enkripto</button><button class="ghost" onclick="aesDec()">Dekripto</button><div class="out" id="aesOut">Shtyp tekstin dhe kliko Enkripto.</div></div>
+<p class="src">📄 Kodi: <code>Encrypt and Decrypt Texts.py</code></p></section>
+<!-- 9. Fetch all links -->
+<section class="mini" id="m-links"><h2>🔗 Fetch All Links From a Webpage</h2>
+<p class="desc">Versioni web i "Fetch all links from a given webpage.py" — ngjit kodin HTML dhe nxirr të gjitha linket.</p>
+<div class="widget"><textarea id="linksIn" placeholder='Ngjit HTML këtu...'>&lt;a href="https://example.com"&gt;Shembull&lt;/a&gt; &lt;a href="/faqja"&gt;Faqja&lt;/a&gt;</textarea><button onclick="linksGo()">Nxirr linket</button><div class="out" id="linksOut"></div></div>
+<p class="src">📄 Kodi: <code>Fetch all links from a given webpage.py</code></p></section>
+<!-- 10. IMDB Ratings -->
+<section class="mini" id="m-imdb"><h2>🎬 Find IMDB Ratings</h2>
+<p class="desc">Simulim i "Find IMDB Ratings.py" — kërko titullin e filmit (të dhëna demo, pa çelës API).</p>
+<div class="widget"><input id="imdbIn" placeholder="Titulli i filmit..."><button onclick="imdbGo()">Kërko</button><div class="out" id="imdbOut"></div><p class="note">Demo me të dhëna shembull — skripti origjinal kërkon IMDbPY.</p></div>
+<p class="src">📄 Kodi: <code>Find IMDB Ratings.py</code></p></section>
+<!-- 11. IP and Hostname -->
+<section class="mini" id="m-dns"><h2>🌐 Get IP Address and Hostname</h2>
+<p class="desc">Versioni web i "Get the IP Address and Hostname of A Website.py" — kërkim real DNS përmes Google DNS-over-HTTPS.</p>
+<div class="widget"><input id="dnsIn" value="example.com" placeholder="Domain (p.sh. example.com)"><button onclick="dnsGo()">Kërko</button><div class="out" id="dnsOut"></div></div>
+<p class="src">📄 Kodi: <code>Get the IP Address and Hostname of A Website.py</code></p></section>
+<!-- 12. Image Watermarking -->
+<section class="mini" id="m-wm"><h2>🖼️ Image Watermarking</h2>
+<p class="desc">Versioni web i "Image Watermarking.py" — ngarko një imazh, shto watermark tekst dhe shkarkoje.</p>
+<div class="widget"><input type="file" id="wmFile" accept="image/*"><input id="wmText" value="© Erion Nezha" placeholder="Teksti i watermark-ut"><button onclick="wmGo()">Apliko watermark</button><br><canvas class="preview" id="wmCanvas"></canvas><br><button class="ghost" id="wmDl" style="display:none" onclick="wmDownload()">Shkarko imazhin</button></div>
+<p class="src">📄 Kodi: <code>Image Watermarking.py</code></p></section>
+<!-- 13. Low Battery Notification -->
+<section class="mini" id="m-bat"><h2>🔋 Low Battery Notification</h2>
+<p class="desc">Versioni web i "Low Battery Notification.py" — lexon baterinë reale të pajisjes (Battery API) dhe njofton nën pragun.</p>
+<div class="widget"><div class="row"><input type="number" id="batTh" value="20" min="1" max="100" placeholder="Pragu %"><button onclick="batGo()">Kontrollo baterinë</button></div><div class="out" id="batOut"></div></div>
+<p class="src">📄 Kodi: <code>Low Battery Notification.py</code></p></section>
+<!-- 14. Organize downloads -->
+<section class="mini" id="m-org"><h2>📁 Organize Download Folder</h2>
+<p class="desc">Simulim i "Organized download folder with different categories.py" — kategorizon automatikisht file-t sipas prapashtesës.</p>
+<div class="widget"><button onclick="orgGo()">Organizo file-t demo</button><div class="out" id="orgOut">Kliko për të parë kategorizimin.</div></div>
+<p class="src">📄 Kodi: <code>Organized download folder with different categories.py</code></p></section>
+<!-- 15. Password Generator -->
+<section class="mini" id="m-pw"><h2>🔑 Password Generator</h2>
+<p class="desc">Versioni web i "Password Generator.py" — gjeneron password të fortë me gjatësi dhe opsione.</p>
+<div class="widget"><div class="row"><input type="number" id="pwLen" value="16" min="4" max="64"><select id="pwMode"><option value="all">Të gjitha karakteret</option><option value="nosp">Pa simbole</option><option value="num">Vetëm numra</option></select></div><button onclick="pwGo()">Gjenero</button><div class="out" id="pwOut" style="font-size:1.1rem"></div></div>
+<p class="src">📄 Kodi: <code>Password Generator.py</code></p></section>
+<!-- 16. Compress files -->
+<section class="mini" id="m-zip"><h2>🗜️ Compress Folders and Files</h2>
+<p class="desc">Versioni web i "Python script to compress folders and files.py" — zgjidh file dhe shiko madhësinë reale + kursimin e vlerësuar.</p>
+<div class="widget"><input type="file" id="zipFiles" multiple><button onclick="zipGo()">Analizo</button><div class="out" id="zipOut">Zgjidh file për analizë.</div></div>
+<p class="src">📄 Kodi: <code>Python script to compress folders and files.py</code></p></section>
+<!-- 17. Scrap images -->
+<section class="mini" id="m-img"><h2>🖼️ Scrap Images From Web Page</h2>
+<p class="desc">Versioni web i "Scrap and Download all images from the WEB Page.py" — ngjit HTML dhe listo të gjitha imazhet.</p>
+<div class="widget"><textarea id="imgIn" placeholder='Ngjit HTML këtu...'>&lt;img src="foto1.jpg"&gt; &lt;img src="https://example.com/foto2.png"&gt;</textarea><button onclick="imgGo()">Nxirr imazhet</button><div class="out" id="imgOut"></div></div>
+<p class="src">📄 Kodi: <code>Scrap and Download all images from the WEB Page.py</code></p></section>
+<!-- 18. Website snapshot -->
+<section class="mini" id="m-snap"><h2>📷 Snapshot of The Given Website</h2>
+<p class="desc">Simulim i "Snapshot of The Given Website.py" — krijon një "snapshot" të faqes me vulë kohe (kapja reale kërkon desktop).</p>
+<div class="widget"><input id="snapIn" value="https://example.com" placeholder="URL e faqes..."><button onclick="snapGo()">Krijo snapshot</button><div class="out" id="snapOut"></div></div>
+<p class="src">📄 Kodi: <code>Snapshot of The Given Website.py</code></p></section>
+<!-- 19. Split files -->
+<section class="mini" id="m-split"><h2>✂️ Split Files Into Chunks</h2>
+<p class="desc">Versioni web i "Split Files Into Chunks.py" — ndan realisht një file në pjesë me madhësi të zgjedhur dhe i shkarkon.</p>
+<div class="widget"><input type="file" id="splitFile"><div class="row"><input type="number" id="splitSize" value="1024" min="1" placeholder="Madhësia e pjesës (KB)"></div><button onclick="splitGo()">Ndaj file-in</button><div class="out" id="splitOut">Zgjidh një file.</div><div id="splitDl"></div></div>
+<p class="src">📄 Kodi: <code>Split Files Into Chunks.py</code></p></section>
+<!-- 20. String search -->
+<section class="mini" id="m-search"><h2>🔍 String Search From Multiple Files</h2>
+<p class="desc">Versioni web i "String search from multiple files.py" — kërko një tekst në disa file-e njëherësh.</p>
+<div class="widget"><input type="file" id="searchFiles" multiple accept=".txt,.py,.js,.md,.csv"><input id="searchTerm" placeholder="Teksti për kërkim..."><button onclick="searchGo()">Kërko</button><div class="out" id="searchOut">Zgjidh file-e tekst dhe shtyp termin.</div></div>
+<p class="src">📄 Kodi: <code>String search from multiple files.py</code></p></section>
+<!-- 21. Terminal Progress Bar -->
+<section class="mini" id="m-prog"><h2>📊 Terminal Progress Bar</h2>
+<p class="desc">Versioni web i "Terminal Progress Bar.py" — shirit progresi në stil terminali.</p>
+<div class="widget"><button onclick="progGo()">Nis progresin</button><div class="term" id="progTerm">Gati.</div><div class="bar"><i id="progBar"></i></div></div>
+<p class="src">📄 Kodi: <code>Terminal Progress Bar.py</code></p></section>
+<!-- 22. Text To Speech -->
+<section class="mini" id="m-tts"><h2>🔊 Text To Speech</h2>
+<p class="desc">Versioni web i "Text To Speech.py" — shndërron tekstin në zë me Web Speech API.</p>
+<div class="widget"><textarea id="ttsIn">Përshëndetje! Ky është një test i shndërrimit të tekstit në zë.</textarea><button onclick="ttsGo()">Lexoje</button><button class="ghost" onclick="speechSynthesis.cancel()">Ndalo</button></div>
+<p class="src">📄 Kodi: <code>Text To Speech.py</code></p></section>
+<!-- 23. Youtube comments -->
+<section class="mini" id="m-yt"><h2>💬 Web Scrapping Youtube Comments</h2>
+<p class="desc">Simulim i "Web Scrapping Youtube Comment.py" — tregon si duket nxjerrja e komenteve (të dhëna demo, pa API).</p>
+<div class="widget"><input id="ytIn" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ" placeholder="URL e videos..."><button onclick="ytGo()">Nxirr komentet</button><div class="out" id="ytOut"></div><p class="note">Demo me të dhëna shembull — skripti origjinal përdor YouTube API.</p></div>
+<p class="src">📄 Kodi: <code>Web Scrapping Youtube Comment.py</code></p></section>
+</main>
+<footer>Krijuar nga <strong>Erion Nezha</strong> — © 2026</footer>
+<script>
+const MENU=[["m-todo","📝 Todo"],["m-age","🎂 Mosha"],["m-shot","📸 Screenshots"],["m-json","🔄 JSON→CSV"],["m-sw","⏱️ Kronometër"],["m-cur","💱 Monedha"],["m-bin","🔢 Binare"],["m-aes","🔐 AES"],["m-links","🔗 Linke"],["m-imdb","🎬 IMDB"],["m-dns","🌐 DNS"],["m-wm","🖼️ Watermark"],["m-bat","🔋 Bateria"],["m-org","📁 Organizo"],["m-pw","🔑 Password"],["m-zip","🗜️ Kompreso"],["m-img","🖼️ Imazhe"],["m-snap","📷 Snapshot"],["m-split","✂️ Ndaj"],["m-search","🔍 Kërko"],["m-prog","📊 Progres"],["m-tts","🔊 TTS"],["m-yt","💬 YT Komentet"]];
+const menuEl=document.getElementById('menu');
+MENU.forEach(([id,label],i)=>{
+  const b=document.createElement('button');b.textContent=label;
+  b.onclick=()=>{document.querySelectorAll('.mini').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    menuEl.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');};
+  if(i===0)b.classList.add('active');
+  menuEl.appendChild(b);
+});
+document.getElementById('m-todo').classList.add('active');
+const $=id=>document.getElementById(id);
+/* 1. Todo */
+let todos=[];
+function todoAdd(){const v=$('todoIn').value.trim();if(!v)return;todos.push({t:v,done:false});$('todoIn').value='';todoRender();}
+function todoRender(){$('todoList').innerHTML=todos.map((t,i)=>'<li class="'+(t.done?'done':'')+'"><span style="flex:1">'+t.t.replace(/</g,'&lt;')+'</span><button onclick="todos['+i+'].done=!todos['+i+'].done;todoRender()">'+(t.done?'↩':'✓')+'</button><button class="ghost" onclick="todos.splice('+i+',1);todoRender()">✕</button></li>').join('');}
+/* 2. Age */
+function ageCalc(){const b=new Date($('ageIn').value),n=new Date();if(isNaN(b)||b>n){$('ageOut').textContent='Datë e pavlefshme.';return;}
+  let y=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth(),d=n.getDate()-b.getDate();
+  if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate();}
+  if(m<0){y--;m+=12;}
+  $('ageOut').textContent='Mosha: '+y+' vite, '+m+' muaj, '+d+' ditë.';}
+/* 3. Screenshots */
+let shotT=null,shotN=0;
+function shotStart(){shotStop();shotN=0;const s=Math.max(1,parseInt($('shotSec').value)||5);
+  $('shotOut').textContent='Planifikimi nisi — kapje çdo '+s+' sekonda.\n';
+  shotT=setInterval(()=>{shotN++;$('shotOut').textContent+='['+new Date().toLocaleTimeString()+'] screenshot_'+String(shotN).padStart(3,'0')+'.png u ruajt (simulim)\n';},s*1000);}
+function shotStop(){if(shotT){clearInterval(shotT);shotT=null;$('shotOut').textContent+='Planifikimi u ndalua. Totali: '+shotN+' kapje.';}}
+/* 4. JSON to CSV */
+let lastCsv='';
+function json2csv(){try{const data=JSON.parse($('jsonIn').value);if(!Array.isArray(data)||!data.length)throw 0;
+  const keys=[...new Set(data.flatMap(o=>Object.keys(o)))];
+  lastCsv=keys.join(',')+'\n'+data.map(o=>keys.map(k=>JSON.stringify(o[k]??'')).join(',')).join('\n');
+  $('jsonOut').textContent=lastCsv;$('jsonOut').classList.remove('err');
+ }catch(e){$('jsonOut').textContent='Gabim: JSON i pavlefshëm (duhet array objektesh).';$('jsonOut').classList.add('err');}}
+function csvDl(){if(!lastCsv)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([lastCsv],{type:'text/csv'}));a.download='output.csv';a.click();}
+/* 5. Stopwatch */
+let swT0=0,swEl=0,swRun=null,swL=[];
+function swFmt(ms){const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60,c=Math.floor(ms/10)%100;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(c).padStart(2,'0');}
+function swStart(){if(swRun){clearInterval(swRun);swRun=null;swEl+=Date.now()-swT0;event.target.textContent='Vazhdo';return;}
+  swT0=Date.now();event.target.textContent='Ndalo';
+  swRun=setInterval(()=>{$('swOut').textContent=swFmt(swEl+Date.now()-swT0);},31);}
+function swLap(){const t=swRun?swEl+Date.now()-swT0:swEl;swL.push(t);
+  $('swLaps').textContent=swL.map((l,i)=>'Xhiro '+(i+1)+': '+swFmt(l)).join('\n');}
+function swReset(){if(swRun)clearInterval(swRun);swRun=null;swEl=0;swL=[];$('swOut').textContent='00:00.00';$('swLaps').textContent='';document.querySelector('#m-sw button').textContent='Nis';}
+/* 6. Currency */
+const RATES={USD:92,EUR:100,GBP:117,JPY:0.61,ALL:1};
+function curConv(){const a=parseFloat($('curAmt').value),f=$('curFrom').value,t=$('curTo').value;
+  if(isNaN(a)){$('curOut').textContent='Shuma e pavlefshme.';return;}
+  $('curOut').textContent=a+' '+f+' = '+(a*RATES[f]/RATES[t]).toFixed(2)+' '+t;}
+/* 7. Decimal/Binary */
+function binConvert(){const d=$('binDec').value.trim(),b=$('binBin').value.trim();let r='';
+  if(d){const n=parseInt(d,10);r+=isNaN(n)?'Dhjetori i pavlefshëm.':'Dhjetor '+n+' → Binar '+n.toString(2)+'\n';}
+  if(b){r+=/^[01]+$/.test(b)?'Binar '+b+' → Dhjetor '+parseInt(b,2):'Binari i pavlefshëm (vetëm 0/1).';}
+  $('binOut').textContent=r||'Plotëso një fushë.';}
+/* 8. AES-GCM via WebCrypto */
+let aesKey=null,aesData=null;
+async function aesGetKey(){if(aesKey)return aesKey;
+  aesKey=await crypto.subtle.importKey('raw',new TextEncoder().encode('this is a 16 key'),'AES-GCM',false,['encrypt','decrypt']);return aesKey;}
+function hex(b){return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function unhex(s){const a=new Uint8Array(s.length/2);for(let i=0;i<a.length;i++)a[i]=parseInt(s.substr(i*2,2),16);return a;}
+async function aesEnc(){try{const k=await aesGetKey(),iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,new TextEncoder().encode($('aesIn').value));
+  aesData={iv:hex(iv),ct:hex(ct)};
+  $('aesOut').textContent='Çelësi: this is a 16 key\nIV: '+aesData.iv+'\nEnkriptuar: '+aesData.ct;
+ }catch(e){$('aesOut').textContent='Gabim: '+e.message;}}
+async function aesDec(){if(!aesData){$('aesOut').textContent='Enkripto së pari.';return;}
+  try{const k=await aesGetKey();
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unhex(aesData.iv)},k,unhex(aesData.ct));
+  $('aesOut').textContent+='\nDekriptuar: '+new TextDecoder().decode(pt);
+ }catch(e){$('aesOut').textContent+='\nGabim dekriptimi.';}}
+/* 9. Fetch links */
+function linksGo(){const doc=new DOMParser().parseFromString($('linksIn').value,'text/html');
+  const a=[...doc.querySelectorAll('a[href]')].map(x=>x.getAttribute('href'));
+  $('linksOut').textContent=a.length?a.map((h,i)=>(i+1)+'. '+h).join('\n'):'Asnjë link nuk u gjet.';}
+/* 10. IMDB mock */
+const IMDBD={'inception':['Inception','2010','8.8'],'titanic':['Titanic','1997','7.9'],'avatar':['Avatar','2009','7.9'],'joker':['Joker','2019','8.4']};
+function imdbGo(){const q=$('imdbIn').value.trim().toLowerCase();
+  const f=Object.keys(IMDBD).find(k=>k.includes(q)||q.includes(k));
+  $('imdbOut').textContent=f?('Titulli: '+IMDBD[f][0]+'\nViti: '+IMDBD[f][1]+'\nVlerësimi IMDB: '+IMDBD[f][2]+'/10'):'Nuk u gjet në të dhënat demo. Provo: Inception, Titanic, Avatar, Joker.';}
+/* 11. DNS real */
+async function dnsGo(){const d=$('dnsIn').value.trim().replace(/^https?:\/\//,'').split('/')[0];
+  $('dnsOut').textContent='Po kërkohet...';
+  try{const r=await fetch('https://dns.google/resolve?name='+encodeURIComponent(d)+'&type=A');
+    const j=await r.json();
+    $('dnsOut').textContent=j.Answer?('Domain: '+d+'\nIP: '+j.Answer.filter(a=>a.type===1).map(a=>a.data).join(', ')):'Asnjë regjistrim A për '+d;
+  }catch(e){$('dnsOut').textContent='Gabim rrjeti — kontrollo lidhjen.';}}
+/* 12. Watermark */
+function wmGo(){const f=$('wmFile').files[0];if(!f){alert('Zgjidh një imazh.');return;}
+  const img=new Image();img.onload=()=>{const c=$('wmCanvas'),x=c.getContext('2d');
+    c.width=img.width;c.height=img.height;x.drawImage(img,0,0);
+    x.font=Math.max(16,img.width/20)+'px sans-serif';x.fillStyle='rgba(255,255,255,.75)';
+    x.textAlign='right';x.fillText($('wmText').value,img.width-20,img.height-25);
+    $('wmDl').style.display='inline-block';};img.src=URL.createObjectURL(f);}
+function wmDownload(){const a=document.createElement('a');a.href=$('wmCanvas').toDataURL('image/png');a.download='watermarked.png';a.click();}
+/* 13. Battery */
+async function batGo(){const th=parseInt($('batTh').value)||20;
+  if(!navigator.getBattery){$('batOut').textContent='Battery API nuk mbështetet në këtë browser.';return;}
+  const b=await navigator.getBattery(),p=Math.round(b.level*100);
+  $('batOut').textContent='Niveli: '+p+'%\nKarikim: '+(b.charging?'po':'jo')+(p<=th?'\n⚠️ BATERI E ULËT — njoftohet përdoruesi!':'\nBateria mbi pragun ('+th+'%).');}
+/* 14. Organize */
+function orgGo(){const files=['foto.jpg','dokument.pdf','kenge.mp3','film.mp4','arkiv.zip','tabela.xlsx','prezantim.pptx','script.py','ikon.png'];
+  const cats={Imazhe:['jpg','png','gif'],Dokumente:['pdf','xlsx','pptx','docx'],Muzikë:['mp3','wav'],Video:['mp4','mkv'],Arkiva:['zip','rar'],Kode:['py','js']};
+  const out={};files.forEach(f=>{const e=f.split('.').pop().toLowerCase();
+    const c=Object.keys(cats).find(k=>cats[k].includes(e))||'Të tjera';(out[c]=out[c]||[]).push(f);});
+  $('orgOut').textContent=Object.entries(out).map(([k,v])=>'📁 '+k+'/\n  '+v.join('\n  ')).join('\n');}
+/* 15. Password */
+function pwGo(){const n=Math.max(4,Math.min(64,parseInt($('pwLen').value)||16)),m=$('pwMode').value;
+  const L='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',D='0123456789',S='!@#$%^&*()-_=+[]{};:,.<>?';
+  let pool=m==='num'?D:(m==='nosp'?L+D:L+D+S),r='';
+  const rnd=new Uint32Array(n);crypto.getRandomValues(rnd);
+  for(let i=0;i<n;i++)r+=pool[rnd[i]%pool.length];
+  $('pwOut').textContent=r;}
+/* 16. Compress estimate */
+function zipGo(){const fs=$('zipFiles').files;if(!fs.length){$('zipOut').textContent='Zgjidh file.';return;}
+  let t=0;const rows=[...fs].map(f=>{t+=f.size;return f.name+' — '+(f.size/1024).toFixed(1)+' KB';});
+  $('zipOut').textContent=rows.join('\n')+'\n\nTotali: '+(t/1024).toFixed(1)+' KB\nVlerësimi i kompresuar (~30% kursim): '+(t*0.7/1024).toFixed(1)+' KB';}
+/* 17. Scrap images */
+function imgGo(){const doc=new DOMParser().parseFromString($('imgIn').value,'text/html');
+  const im=[...doc.querySelectorAll('img[src]')].map(x=>x.getAttribute('src'));
+  $('imgOut').textContent=im.length?im.map((s,i)=>(i+1)+'. '+s).join('\n'):'Asnjë imazh nuk u gjet.';}
+/* 18. Snapshot */
+function snapGo(){const u=$('snapIn').value.trim();
+  $('snapOut').textContent='📷 Snapshot u krijua (simulim)\nURL: '+u+'\nKoha: '+new Date().toLocaleString()+'\nFormati: snapshot_'+Date.now()+'.png';}
+/* 19. Split file */
+async function splitGo(){const f=$('splitFile').files[0];if(!f){$('splitOut').textContent='Zgjidh një file.';return;}
+  const kb=Math.max(1,parseInt($('splitSize').value)||1024),sz=kb*1024,n=Math.ceil(f.size/sz);
+  $('splitOut').textContent='File: '+f.name+' ('+(f.size/1024).toFixed(1)+' KB) → '+n+' pjesë nga '+kb+' KB';
+  const box=$('splitDl');box.innerHTML='';
+  for(let i=0;i<n;i++){const part=f.slice(i*sz,Math.min(f.size,(i+1)*sz));
+    const a=document.createElement('button');a.className='ghost';a.textContent='Shkarko pjesën '+(i+1);
+    a.onclick=()=>{const u=document.createElement('a');u.href=URL.createObjectURL(part);u.download=f.name+'.part'+(i+1);u.click();};
+    box.appendChild(a);}}
+/* 20. String search */
+async function searchGo(){const fs=$('searchFiles').files,t=$('searchTerm').value;if(!fs.length||!t){$('searchOut').textContent='Zgjidh file-e dhe termin.';return;}
+  let out='';
+  for(const f of fs){const txt=await f.text();const lines=txt.split('\n');
+    lines.forEach((l,i)=>{if(l.toLowerCase().includes(t.toLowerCase()))out+=f.name+':'+(i+1)+': '+l.trim().slice(0,80)+'\n';});}
+  $('searchOut').textContent=out||'Asnjë përputhje.';}
+/* 21. Progress bar */
+let progI=null;
+function progGo(){if(progI)clearInterval(progI);let p=0;
+  progI=setInterval(()=>{p+=2;if(p>100){p=100;clearInterval(progI);}
+    $('progBar').style.width=p+'%';
+    $('progTerm').textContent='['+'█'.repeat(p/2)+'░'.repeat(50-p/2)+'] '+p+'%';},60);}
+/* 22. TTS */
+function ttsGo(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance($('ttsIn').value);
+  u.lang='sq-AL';speechSynthesis.speak(u);}
+/* 23. Youtube comments mock */
+function ytGo(){const v=$('ytIn').value.trim();
+  $('ytOut').textContent='Video: '+v+'\n\n1. Arben K. — "Video shumë e mirë, faleminderit!" 👍 245\n2. Elira M. — "Më ndihmoi shumë ky tutorial." 👍 189\n3. Dritan H. — "Pjesa e dytë kur vjen?" 👍 98\n\n(3 komente demo — skripti origjinal nxjerr komente reale me YouTube API.)';}
+</script>
+</body>
+</html>
